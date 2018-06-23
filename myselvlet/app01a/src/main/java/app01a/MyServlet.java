@@ -9,7 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
-
+/**
+ * @author fatcat
+ */
 @WebServlet(name = "MyServlet", urlPatterns = { "/my" })
 public class MyServlet implements Servlet {
 	private transient ServletConfig servletConfig;
