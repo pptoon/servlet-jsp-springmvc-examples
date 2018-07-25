@@ -9,31 +9,79 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.descriptor.tld.TldRuleSet.Variable;
+
 /**
  * @author fatcat
  */
-@WebServlet(name = "PreferenceServlet", urlPatterns = { "/preference" })
+@WebServlet(
+		name = "PreferenceServlet",
+		urlPatterns = { "/preference" })
 public class PreferenceServlet extends HttpServlet {
 	private static final long serialVersionUID = 888L;
 
 	public static final String MENU = "<div style='background:#e8e8e8;" + "padding:15px'>"
-			+ "<a href='cookieClass'>Cookie Class</a>&nbsp;&nbsp;" + "<a href='cookieInfo'>Cookie Info</a>&nbsp;&nbsp;"
-			+ "<a href='preference'>Preference</a>" + "</div>";
+			+ "		<a href='cookieClass'>Cookie Class</a>&nbsp;&nbsp;" 
+			+ "		<a href='cookieInfo'>Cookie Info</a>&nbsp;&nbsp;"
+			+ "		<a href='preference'>Preference</a>" 
+			+ "</div>";
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		writer.print("<html><head>" + "<title>Preference</title>" + "<style>table {" + "font-size:small;"
-				+ "background:NavajoWhite }</style>" + "</head><body>" + MENU + "Please select the values below:"
-				+ "<form method='post'>" + "<table>" + "<tr><td>Title Font Size: </td>"
-				+ "<td><select name='titleFontSize'>" + "<option>large</option>" + "<option>x-large</option>"
-				+ "<option>xx-large</option>" + "</select></td>" + "</tr>" + "<tr><td>Title Style & Weight: </td>"
-				+ "<td><select name='titleStyleAndWeight' multiple>" + "<option>italic</option>"
-				+ "<option>bold</option>" + "</select></td>" + "</tr>" + "<tr><td>Max. Records in Table: </td>"
-				+ "<td><select name='maxRecords'>" + "<option>5</option>" + "<option>10</option>" + "</select></td>"
-				+ "</tr>" + "<tr><td rowspan='2'>" + "<input type='submit' value='Set'/></td>" + "</tr>" + "</table>"
-				+ "</form>" + "</body></html>");
+		String htmlContent = "<html>"
+				+ "<head>"
+				+ "		<title>Preference</title>"
+				+ "		<style>"
+				+ "			table {"
+				+ "				font-size:small;background:NavajoWhite "
+				+ "			}"
+				+ "		</style>"
+				+ "</head>"
+				+ "<body>"
+				+ MENU
+				+ "Please select the values below:"
+				+ "<form method='post'>"
+				+ "		<table>"
+				+ "			<tr>"
+				+ "				<td>Title Font Size: </td>"
+				+ "				<td>"
+				+ "					<select name='titleFontSize'>"
+				+ "						<option>large</option>"
+				+ "						<option>x-large</option>"
+				+ "						<option>xx-large</option>"
+				+ "					</select>"
+				+ "				</td>"
+				+ "			</tr>"
+				+ "			<tr>"
+				+ "				<td>Title Style & Weight: </td>"
+				+ "				<td>"
+				+ "					<select name='titleStyleAndWeight' multiple>"
+				+ "						<option>italic</option>"
+				+ "						<option>bold</option>"
+				+ "					</select>"
+				+ "				</td>"
+				+ "			</tr>"
+				+ "			<tr>"
+				+ "				<td>Max. Records in Table: </td>"
+				+ "				<td>"
+				+ "					<select name='maxRecords'>"
+				+ "						<option>5</option>"
+				+ "						<option>10</option>"
+				+ "					</select>"
+				+ "				</td>"
+				+ "			</tr>"
+				+ "			<tr>"
+				+ "				<td rowspan='2'>"
+				+ "					<input type='submit' value='Set'/>"
+				+ "				</td>"
+				+ "			</tr>"
+				+ "		</table>"
+				+ "</form>"
+				+ "</body>"
+				+ "</html>";
+		writer.print(htmlContent);
 
 	}
 
@@ -46,8 +94,8 @@ public class PreferenceServlet extends HttpServlet {
 		response.addCookie(new Cookie("maxRecords", maxRecords));
 		response.addCookie(new Cookie("titleFontSize", titleFontSize));
 
-		// delete titleFontWeight and titleFontStyle cookies first
-		// Delete cookie by adding a cookie with the maxAge = 0;
+		// 先删除 titleFontWeight 和 titleFontStyle 两个cookie
+		// 删除方法：通过设置同名cookie的 maxAge = 0;
 		Cookie cookie = new Cookie("titleFontWeight", "");
 		cookie.setMaxAge(0);
 		response.addCookie(cookie);
@@ -68,19 +116,39 @@ public class PreferenceServlet extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		writer.println("<html><head>" + "<title>Preference</title>" + "</head><body>" + MENU
-				+ "Your preference has been set." + "<br/><br/>Max. Records in Table: " + maxRecords
-				+ "<br/>Title Font Size: " + titleFontSize + "<br/>Title Font Style & Weight: ");
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(
+				"<html>"
+						+ "<head>"
+						+ "<title>Preference</title>"
+						+ "</head>"
+						+ "<body>"
+						+ MENU
+						+ "		Your preference has been set."
+						+ "		<br/>"
+						+ "		<br/>"
+						+ "		Max. Records in Table: "
+						+ maxRecords
+						+ "		<br/>"
+						+ "		Title Font Size: "
+						+ titleFontSize
+						+ "		<br/>"
+						+ "		Title Font Style & Weight: ");
 
 		// titleStyleAndWeight will be null if none of the options
 		// was selected
 		if (titleStyleAndWeight != null) {
-			writer.println("<ul>");
+			stringBuilder.append("		<ul>");
 			for (String style : titleStyleAndWeight) {
-				writer.print("<li>" + style + "</li>");
+				stringBuilder.append("			<li>" + style + "</li>");
 			}
-			writer.println("</ul>");
+			stringBuilder.append("		</ul>");
 		}
-		writer.println("</body></html>");
+		stringBuilder.append(
+				"</body>"
+				+ "</html>");
+		String htmlContent = stringBuilder.toString();
+
+		writer.println(htmlContent);
 	}
 }

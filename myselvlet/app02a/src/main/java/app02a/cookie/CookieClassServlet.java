@@ -33,20 +33,25 @@ public class CookieClassServlet extends HttpServlet {
 				}
 			}
 		}
-		// default
+		// 设置默认每页记录数为5
 		int maxRecords = 5; 
 		if (maxRecordsCookie != null) {
 			try {
 				maxRecords = Integer.parseInt(maxRecordsCookie.getValue());
 			} catch (NumberFormatException e) {
-				// do nothing, use maxRecords default value
+				// 什么都不干，就用默认的每页最大记录数
 			}
 		}
 
 		response.setContentType("text/html");
 		PrintWriter writer = response.getWriter();
-		writer.print("<html><head>" + "<title>Cookie Class</title>" + "</head><body>" + PreferenceServlet.MENU
-				+ "<div>Here are some of the methods in " + "javax.servlet.http.Cookie");
+		writer.print(
+				"<html>"
+				+ "<head>"
+				+ "	<title>Cookie Class</title>"
+				+ "</head>"
+				+ "<body>" + PreferenceServlet.MENU
+				+ "	<div>Here are some of the methods in " + "javax.servlet.http.Cookie");
 		writer.print("<ul>");
 
 		for (int i = 0; i < maxRecords; i++) {

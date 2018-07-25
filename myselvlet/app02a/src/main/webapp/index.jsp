@@ -7,8 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<a href="top10">top10</a>
-
-	<a href="customer">customer</a>
+	<ul>
+		<li><a href="top10">城市十大景点（由url参数实现）</a></li>
+		<li><a href="customer">顾客信息（由隐藏域实现）</a></li>
+		<li><a href="preference">个性化设置（cookie实现）</a></li>
+		<li><a href="cookieClass">cookie类测试</a></li>
+		<li><a href="cookieInfo">cookie信息</a></li>
+		<li><a href="products">产品列表</a></li>
+	</ul>
 </body>
 </html>
